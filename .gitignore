@@ -1,7 +1,2 @@
-__pycache__/
-*.pyc
-.env
-.venv/
-audit.log
-sitemap.xml
-database.db
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*
