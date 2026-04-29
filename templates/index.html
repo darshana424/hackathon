@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrlForge | Autonomous SEO Engine</title>
+    <link rel="stylesheet" href="/static/modern_forge.css?v={{ timestamp | default('4') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="loading-overlay" class="hidden">
+        <div class="status-container">
+            <div class="status-pulse"></div>
+            <div id="status-display" class="status-text">Initializing UrlForge Engine...</div>
+        </div>
+    </div>
+
+    <div class="nav-container">
+        <nav class="modern-nav">
+            <div class="nav-logo">URLFORGE</div>
+            <div class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#features-section" class="nav-link">Features</a>
+                <a href="#faqs-section" class="nav-link">FAQs</a>
+                <button class="nav-btn">Log In</button>
+            </div>
+        </nav>
+    </div>
+
+    <section class="hero-section fade-in">
+        <span class="badge">Autonomous SEO Engine</span>
+        <h1 class="hero-title">Your Complete<br>Site Fixer AI</h1>
+        <p class="hero-subtitle">UrlForge identifies SEO loopholes, generates high-ranking pages, and optimizes your entire site with zero effort. Press on the canvas to focus and interact.</p>
+    </section>
+
+    <div class="content-area">
+
+<div id="cards">
+
+    <!-- FORM CARD -->
+    <div class="card result-card glass-card">
+        <div id="plugin-tab">
+            <h2 class="section-title" style="margin-bottom: 10px;">Autonomous Plugin Engine</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                Crawl, analyze, fix SEO loopholes, generate new content for keyword gaps, and deploy back to site autonomously.
+            </p>
+            <form id="plugin-form" action="/plugin/run" method="post">
+                <div class="form-group">
+                    <label>Site URL</label>
+                    <input type="text" name="site_url" placeholder="https://example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Competitor Domains (comma separated)</label>
+                    <input type="text" name="competitors" placeholder="competitor1.com, competitor2.com">
+                </div>
+
+
+                <div class="form-group">
+                    <label>Crawl Limit</label>
+                    <input type="number" name="limit" value="100" min="1" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="plugin_broken_links" name="broken_links_only" value="true">
+                    <label for="plugin_broken_links">Deep focus on fixing broken links</label>
+                </div>
+
+                <div style="border-top: 1px dashed var(--card-border); padding-top: 15px; margin-top: 15px;">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">ENTERPRISE CRAWLER SETTINGS</p>
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="flex: 1; margin: 0;">
+                            <label>Max Depth</label>
+                            <input type="number" name="max_depth" value="10" min="1" max="100">
+                        </div>
+                        <div class="form-group" style="flex: 1; margin: 0;">
+                            <label>Concurrency</label>
+                            <input type="number" name="concurrency" value="10" min="1" max="50">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Crawler Identity (User-Agent)</label>
+                        <select name="user_agent" style="width:100%; padding:14px 18px; border-radius:12px; border:1px solid var(--card-border); background:rgba(255,255,255,0.3); font-family:'Inter', sans-serif;">
+                            <option value="chrome">Google Chrome (Desktop)</option>
+                            <option value="googlebot">GoogleBot</option>
+                            <option value="googlebot_mobile">GoogleBot (Smartphone)</option>
+                            <option value="bingbot">BingBot</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Storage Backend</label>
+                        <select name="crawler_backend" style="width:100%; padding:14px 18px; border-radius:12px; border:1px solid var(--card-border); background:rgba(255,255,255,0.3); font-family:'Inter', sans-serif;">
+                            <option value="memory">In-Memory (Fast, &lt;10k pages)</option>
+                            <option value="sqlite">SQLite (Enterprise, &gt;10k pages)</option>
+                        </select>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="plugin_crawl_assets" name="crawl_assets" value="true">
+                        <label for="plugin_crawl_assets">Enable Deep Asset Crawl (CSS, JS, Images, PDFs)</label>
+                    </div>
+
+                    <div class="checkbox-group" style="margin-top: 10px;">
+                        <input type="checkbox" id="plugin_use_js" name="use_js" value="true">
+                        <label for="plugin_use_js">Enable JS Rendering (Playwright)</label>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Crawl Delay (Seconds)</label>
+                        <input type="number" name="delay" value="1.0" min="0.1" max="10" step="0.1" style="width:100%; padding:14px; border-radius:12px; border:1px solid var(--card-border); background:rgba(255,255,255,0.3);">
+                    </div>
+                </div>
+
+                <div class="ai-world-section" style="border-top: 1px solid var(--card-border); margin-top: 20px; padding-top: 20px;">
+                    <!-- DISCOVERY CARD VIEW -->
+                    <div id="ai-discovery-card" class="ai-discovery-card" onclick="revealAIForms()">
+                        <h3 class="ai-world-title">The Data World of AI ✨</h3>
+                        <div class="ai-orbit-system">
+                            <div class="orbit-ring" style="width: 140px; height: 140px; animation-duration: 8s;"></div>
+                            <div class="orbit-ring" style="width: 200px; height: 200px; animation-duration: 12s;"></div>
+                            <div class="orbit-ring" style="width: 260px; height: 260px; animation-duration: 16s;"></div>
+                            <div class="ai-core">
+                                <div class="ai-core-glow"></div>
+                                <div class="ai-eyes">
+                                    <span></span><span></span>
+                                </div>
+                            </div>
+                            <div class="planet" style="--orbit-size: 140px; --orbit-speed: 8s;"></div>
+                            <div class="planet" style="--orbit-size: 200px; --orbit-speed: 12s;"></div>
+                            <div class="planet" style="--orbit-size: 260px; --orbit-speed: 16s;"></div>
+                        </div>
+                        <div class="ai-click-me">Click Me ↓</div>
+                    </div>
+
+                    <!-- AI FORMS VIEW (HIDDEN) -->
+                    <div id="ai-config-forms" class="ai-config-forms hidden">
+                        <div class="form-group" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--primary-color);">
+                            <label style="color: var(--primary-color); font-weight: 700;">Primary AI Engine (User Choice)</label>
+                            <select name="primary_provider" onchange="updateAIFields()" style="width:100%; padding:12px; border-radius:8px; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); color: #fff; font-weight: 600;">
+                                <option value="gemini">Google Gemini (Use Google AI Studio API)</option>
+                                <option value="ollama">Ollama (Local / Private)</option>
+                                <option value="openai">OpenAI (Creative Content)</option>
+                                <option value="openrouter">OpenRouter (Universal Choice)</option>
+                            </select>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">UrlForge will use this engine as the lead brain for your analysis.</p>
+                        </div>
+                        <div id="openai-config" class="form-group ai-field-group">
+                            <label>OpenAI API Key (Optional)</label>
+                            <input type="password" name="openai_key" placeholder="sk-...">
+                        </div>
+                        <div id="gemini-config" class="form-group ai-field-group">
+                            <label>Gemini API Key (Optional)</label>
+                            <input type="password" name="gemini_key" placeholder="AIza...">
+                        </div>
+                        <div id="openrouter-config" class="form-group ai-field-group">
+                            <label>OpenRouter API Key (Optional)</label>
+                            <input type="password" name="openrouter_key" placeholder="sk-or-...">
+                        </div>
+                        <div id="ollama-config" class="ai-field-group">
+                            <div style="display: flex; gap: 15px;">
+                                <div class="form-group" style="flex: 2;">
+                                    <label>Ollama Host (Optional)</label>
+                                    <input type="text" name="ollama_host" placeholder="http://localhost:11434">
+                                </div>
+                                <div class="form-group" style="flex: 1;">
+                                    <label>Local Model</label>
+                                    <input type="text" name="ollama_model" placeholder="llama3" value="llama3">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Site Access Token (Optional)</label>
+                            <input type="password" name="site_token" placeholder="Bearer or custom token">
+                        </div>
+                        <button type="button" class="back-to-world" onclick="hideAIForms(event)">← Back to Data World</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="plugin-submit-btn">Run Autonomous Analysis</button>
+            </form>
+        </div>
+
+
+    </div>
+
+    <!-- ERROR STATE -->
+    {% if error %}
+    <div class="card result-card">
+        <h3 style="color: var(--error-color);">Error Occurred</h3>
+        <p style="color: var(--text-muted);">{{error}}</p>
+    </div>
+    {% endif %}
+    
+    <!-- RESULTS (Conditional Rendering) -->
+    {% if audit is defined or seo_score is defined or is_plugin or engine_result %}
+
+    {% if engine_result and engine_result.pages %}
+    <!-- ENTERPRISE AUDIT DASHBOARD -->
+    <div class="card result-card glass-card">
+        <h2 class="section-title">Enterprise Audit Dashboard</h2>
+        
+        <div class="enterprise-grid">
+            <div class="stat-card">
+                <h4>Total Entries</h4>
+                <div class="value">{{engine_result.pages|length}}</div>
+            </div>
+            <div class="stat-card">
+                <h4>HTML Pages</h4>
+                <div class="value">{{ engine_result.pages|selectattr('content_type', 'equalto', 'text/html')|list|length }}</div>
+            </div>
+            <div class="stat-card">
+                <h4>Assets Found</h4>
+                <div class="value">{{ engine_result.pages|rejectattr('content_type', 'equalto', 'text/html')|list|length }}</div>
+            </div>
+            <div class="stat-card">
+                <h4>SEO Score</h4>
+                <div class="value {% if seo_score > 80 %}stat-good{% elif seo_score > 50 %}stat-warn{% else %}stat-bad{% endif %}">{{seo_score}}</div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 30px; font-size: 1rem; color: var(--text-muted); text-transform: uppercase;">Link Depth Distribution</h3>
+        <div class="depth-chart">
+            {% set depth_counts = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0} %}
+            {% for p in engine_result.pages %}
+                {% if p.depth is defined and p.depth < 11 %}
+                    {% set _ = depth_counts.update({p.depth: depth_counts[p.depth] + 1}) %}
+                {% endif %}
+            {% endfor %}
+            
+            {% for d in range(6) %}
+                <div class="depth-wrapper" style="flex: 1; display: flex; flex-direction: column;">
+                    {% set bar_h = (depth_counts[d] / engine_result.pages|length * 200)|round|int if engine_result.pages|length > 0 else 0 %}
+                    <div class="depth-bar" data-count="{{depth_counts[d]}}" style="--bar-h: {{ bar_h }}px; height: var(--bar-h);"></div>
+                    <div class="depth-label">Depth {{d}}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3 style="margin-top: 40px; margin-bottom: 15px;">Site-wide Audit Log</h3>
+        <div class="audit-table-wrapper">
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Time (ms)</th>
+                        <th>Links</th>
+                        <th>Audit Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in engine_result.pages[:50] %}
+                    <tr>
+                        <td class="url-cell">
+                            <a href="{{p.url}}" target="_blank" title="{{p.url}}">{{p.url}}</a>
+                        </td>
+                        <td><span class="badge" style="font-size: 0.65rem;">{{ (p.content_type | default('text/unknown')).split('/')[-1]|upper }}</span></td>
+                        <td><span class="{% if p.status in [200, 304] %}stat-good{% else %}stat-bad{% endif %}" style="font-weight: 700;">{{p.status}}</span></td>
+                        <td>{{p.response_time_ms}}</td>
+                        <td>{{p.links|length if p.links else 0}}</td>
+                        <td>
+                            <div style="font-size: 0.75rem;">
+                                {% if p.meta and p.meta.title %}
+                                    <div title="Title: {{p.meta.title}}">📝 Title: OK</div>
+                                {% elif p.content_type == 'text/html' %}
+                                    <div style="color: #ef4444;">❌ Missing Title</div>
+                                {% endif %}
+                                
+                                {% if p.redirect_history %}
+                                    <div style="color: #f59e0b;">↪️ Redirect: {{p.redirect_history|length}} hops</div>
+                                {% endif %}
+
+                                {% if p.custom %}
+                                    {% for k, v in p.custom.items() %}
+                                        <div style="color: var(--secondary-color);">✨ {{k}}: {{v|length}} found</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if engine_result.pages|length > 50 %}
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">Showing first 50 results. Download full PDF for entire audit data.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if is_plugin %}
+    <!-- PLUGIN REPORT SUMMARY -->
+    {% if is_plugin and plugin_report %}
+    <div class="card result-card glass-card" style="position: relative; overflow: hidden;">
+        <!-- RESTORED BRANDING: THE DATA WORLD OF AI -->
+        <div class="ai-world-section" style="position: absolute; top: -50px; right: -50px; opacity: 0.15; pointer-events: none; transform: scale(0.6);">
+            <div class="ai-orbit-system">
+                <div class="orbit-ring" style="width: 140px; height: 140px; animation-duration: 8s;"></div>
+                <div class="orbit-ring" style="width: 200px; height: 200px; animation-duration: 12s;"></div>
+                <div class="orbit-ring" style="width: 260px; height: 260px; animation-duration: 16s;"></div>
+                <div class="ai-core">
+                    <div class="ai-core-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+            <svg style="width: 32px; height: 32px; color: var(--primary-color);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <h2 class="section-title" style="margin: 0;">Autonomous Plugin Report</h2>
+        </div>
+
+        <div style="margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; position: relative; z-index: 1;">
+            <h3 class="ai-world-title" style="font-size: 0.95rem; margin-bottom: 0; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em;">The Data World of AI ✨</h3>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <div style="text-align: right;">
+                <p><b>Initial Score:</b> {{plugin_report.seo_score_before}}</p>
+                <p><b>Suggested Fixes:</b> {{plugin_report.suggested_actions|length}}</p>
+            </div>
+        </div>
+
+        <!-- NEW: INDEXATION STATUS CARD -->
+        {% if plugin_report.gsc_audit and plugin_report.gsc_audit.available %}
+        <div class="indexation-card glass-card" style="margin-bottom: 25px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 20px; border-radius: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #3b82f6; display: flex; align-items: center; gap: 10px;">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                    </svg>
+                    Google Indexation Status
+                </h3>
+                {% if plugin_report.indexing_report_file %}
+                <a href="/gsc/download_report?task_id={{task_id}}" class="btn-sm" style="background: #3b82f6; border: none; color: white; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 0.8rem;">Download Excel Report</a>
+                {% endif %}
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                <div class="stat-card" style="background: rgba(255,255,255,0.03);">
+                    <h4 style="font-size: 0.75rem; opacity: 0.7;">Indexed Pages</h4>
+                    <div class="value" style="color: #10b981; font-size: 1.5rem;">{{ plugin_report.gsc_audit.indexed | length }}</div>
+                </div>
+                <div class="stat-card" style="background: rgba(255,255,255,0.03);">
+                    <h4 style="font-size: 0.75rem; opacity: 0.7;">Unindexed Pages</h4>
+                    <div class="value" style="color: #ef4444; font-size: 1.5rem;">{{ plugin_report.gsc_audit.unindexed | length }}</div>
+                </div>
+                <div class="stat-card" style="background: rgba(255,255,255,0.03);">
+                    <h4 style="font-size: 0.75rem; opacity: 0.7;">Sitemap Gaps</h4>
+                    <div class="value" style="color: #f59e0b; font-size: 1.5rem;">{{ plugin_report.gsc_audit.gaps.missing_in_sitemap | length }}</div>
+                </div>
+            </div>
+
+            {% if plugin_report.gsc_audit.unindexed %}
+            <div style="margin-top: 15px;">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Issues found that can be solved via Indexing API:</p>
+                <div style="max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                    {% for item in plugin_report.gsc_audit.unindexed %}
+                        <div style="font-size: 0.75rem; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #ef4444;">•</span> {{ item.url }} 
+                            <span style="opacity: 0.5;">({{ item.reason }})</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if plugin_report.gsc_audit.gaps.missing_in_sitemap %}
+            <div style="margin-top: 15px; padding: 10px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                <p style="font-size: 0.85rem; color: #f59e0b; margin: 0;">Missing from Sitemap: {{ plugin_report.gsc_audit.gaps.missing_in_sitemap | length }} URLs detected on site but not in sitemap.xml. Will be fixed upon approval.</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- NEW: STRATEGIC SITE ANALYSIS & PROFILE SECTION -->
+        <div class="review-section" style="margin-top: 20px; border-top: 1px solid var(--card-border); padding-top: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <h3 style="font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em;">Strategic Site Analysis</h3>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="openProfileEditor()" class="btn-sm" style="background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: #fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;">Edit Context</button>
+                    <button onclick="downloadAnalysis()" class="btn-sm" style="background: var(--primary-color); border: none; color: #fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">Export Report</button>
+                </div>
+            </div>
+
+            <!-- Analysis Report -->
+            {% if site_analysis_report %}
+            <div id="site-analysis-area" class="glass-card" style="padding: 25px; background: rgba(0,0,0,0.2); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div class="markdown-body" style="font-size: 0.95rem; line-height: 1.7; color: rgba(255,255,255,0.9);">
+                    {{ site_analysis_report }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Site Profile Summary (Mission & Context) -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; margin-top: 30px;">
+                <h4 style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">AI Generation Context</h4>
+            </div>
+            <div id="profile-display-area" class="glass-card" style="padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; font-size: 0.9rem; line-height: 1.6; max-height: 250px; overflow-y: auto;">
+                {% if plugin_report.site_profile_md %}
+                    <div class="markdown-body">
+                        {{ plugin_report.site_profile_md }}
+                    </div>
+                {% else %}
+                    <p style="color: var(--text-muted); font-style: italic;">No detailed site profile generated yet.</p>
+                {% endif %}
+            </div>
+            <input type="hidden" id="raw-profile-md" value="{{ plugin_report.site_profile_md or '' }}">
+        </div>
+
+        <!-- CONTENT ENGINE SECTION (ALWAYS VISIBLE IN PLUGIN MODE) -->
+        <div class="review-section" style="margin-top: 20px; border-top: 1px solid var(--card-border); padding-top: 20px;">
+            <h3 style="margin-bottom: 15px; font-weight: 600;">Content Engine: Keyword Strategy</h3>
+            
+            <!-- Manual Keyword Entry -->
+            <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--card-border);">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Target a specific keyword for your site:</p>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="manual-keyword" placeholder="e.g. artificial intelligence in healthcare" style="flex: 1; padding: 10px; border-radius: 8px;">
+                    <button onclick="generateContentForKeyword(document.getElementById('manual-keyword').value, '')" class="submit-btn" style="width: auto; margin-top: 0; padding: 10px 20px;">Generate Page</button>
+                </div>
+            </div>
+
+            {% if plugin_report.keyword_recommendations %}
+            <p style="color: var(--text-muted); margin-bottom: 15px;">Target these keywords that your competitors rank for but you are missing.</p>
+            <table class="suggestions-table">
+                <thead>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Source</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rec in plugin_report.keyword_recommendations %}
+                    <tr id="row-{{rec.keyword|replace(' ', '-')}}">
+                        <td><strong>{{rec.keyword}}</strong></td>
+                        <td>{{rec.source}}</td>
+                        <td>
+                            <button onclick="generateContentForKeyword('{{rec.keyword}}', '{{rec.source}}')" class="btn-sm gen-btn" style="background: var(--primary-color); border: none; padding: 5px 12px; border-radius: 4px; color: white; cursor: pointer;">
+                                Generate SEO Page
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="color: var(--text-muted); font-style: italic; font-size: 0.9rem;">No keyword gaps automatically discovered. Use the manual entry above to target new terms.</p>
+            {% endif %}
+        </div>
+
+        <!-- NEW SECTION: KEYWORDS FOUND -->
+        <div class="review-section" style="margin-top: 30px; margin-bottom: 40px; border-top: 1px solid var(--card-border); padding-top: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                <h3 style="font-weight: 600;">Keywords Found</h3>
+                <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2);">{{ site_keywords|length }} Detected</span>
+            </div>
+            
+            {% if site_keywords %}
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                {% for kw in site_keywords %}
+                <div style="background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--card-border); font-size: 0.85rem; color: var(--text-muted);">
+                    {{ kw }}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="color: var(--text-muted); font-style: italic; font-size: 0.9rem;">No keywords specifically mapped to the brand yet.</p>
+            {% endif %}
+        </div>
+        <!-- NEW SECTION: SITE FAQS (RICH CITATIONS) -->
+        <div class="review-section" style="margin-top: 30px; margin-bottom: 40px; border-top: 1px solid var(--card-border); padding-top: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                <h3 style="font-weight: 600;">AI-Powered Site FAQs</h3>
+                <span class="badge" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2);">Rich Results Ready</span>
+            </div>
+            
+            {% if plugin_report.site_faqs %}
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for faq in plugin_report.site_faqs %}
+                <div class="faq-item-card" data-index="{{ loop.index0 }}" data-question="{{ faq.question|e }}" data-answer="{{ faq.answer|e }}" style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 12px; padding: 15px; position: relative; margin-bottom: 12px;">
+                    <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 8px;">
+                        <button onclick="openFAQEditor(this)" class="btn-sm" style="background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">Edit</button>
+                        <button onclick="deleteFAQ(this)" class="btn-sm" style="background: rgba(239, 68, 68, 0.1); border: none; color: #ef4444; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">Delete</button>
+                    </div>
+                    <p style="font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 0.95rem; padding-right: 80px;">Q: {{ faq.question }}</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0;">{{ faq.answer }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="color: var(--text-muted); font-style: italic; font-size: 0.9rem;">Crunching domain patterns to generate citation-focused FAQs...</p>
+            {% endif %}
+        </div>
+
+        {% if plugin_report.state == 'pending_approval' %}
+        <div class="review-section" id="review-area">
+            <h3>Step 1: Review & Approve Suggestions</h3>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">Review the automated suggestions below. Uncheck any you wish to skip.</p>
+            
+            <table class="suggestions-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" checked onchange="toggleAll(this)"></th>
+                        <th>Type</th>
+                        <th>Page</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="suggestions-body">
+                    {% for action in actions %}
+                    <tr>
+                        <td><input type="checkbox" class="action-check" data-id="{{loop.index0}}" checked></td>
+                        <td><span class="badge">{{action.type}}</span></td>
+                        <td class="url-cell">{{action.url}}</td>
+                        <td>
+                            {% if action.description %}
+                                {{action.description}}
+                            {% elif action.type == 'meta' %}
+                                Optimize {{action.tag}} tag (Currently {{action.current_length|default('missing or poor')}})
+                            {% elif action.type == 'image_seo' %}
+                                Add descriptive alt text to image: {{action.src|default('unknown')|truncate(30)}}
+                            {% elif action.type == 'heading_structure' %}
+                                Fix heading hierarchy (e.g. {{action.fix_type|default('ensure H1 exists')}})
+                            {% elif action.type == 'broken_links' %}
+                                Replace broken link pointing to: {{action.href|default('unknown target')}}
+                            {% else %}
+                                {{action.fix_type or 'Apply SEO fix for ' + action.type}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if pages_generated %}
+            <h3 style="margin-top: 25px;">New AI Pages</h3>
+            <table class="suggestions-table" style="table-layout: fixed; width: 100%;">
+                <thead>
+                    <tr>
+                        <th style="width: 40px; text-align: center;"><input type="checkbox" checked onchange="toggleAllPages(this)"></th>
+                        <th style="width: 30%;">Keyword</th>
+                        <th style="width: 50%;">Title</th>
+                        <th style="width: 110px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="pages-body">
+                    {% for page in pages_generated %}
+                    <tr>
+                        <td><input type="checkbox" class="page-check" data-keyword="{{page.keyword}}" checked></td>
+                        <td>{{page.keyword}}</td>
+                        <td>{{page.title}}</td>
+                        <td>
+                            <button 
+                                onclick='openContentEditor("{{page.keyword}}", this)' 
+                                data-schema='{{ page.schema_data|tojson|safe if page.schema_data else "{}" }}'
+                                class="btn-sm" 
+                                style="background: var(--secondary-color); border: none; padding: 5px 12px; border-radius: 4px; color: white; cursor: pointer;">
+                                Edit Content
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+
+            <div style="margin-top: 20px; display: flex; gap: 15px;">
+                <button class="submit-btn" onclick="showAuthForm()">Approve Selected Fixes</button>
+                <button class="tab-btn" style="border: 1px solid var(--card-border);" onclick="downloadPDF()">Download Report PDF</button>
+            </div>
+        </div>
+
+        <!-- AUTH FORM (HIDDEN UNTIL APPROVED) -->
+        <div id="auth-section" class="approved-only review-section" style="border-color: #f59e0b; display: none;">
+            <h3 style="color: #f59e0b;">Step 2: Grant Website Access</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">To apply these changes, please provide deployment credentials.</p>
+            
+            <form id="approval-form">
+                <input type="hidden" name="task_id" value="{{task_id}}">
+                <div class="form-group">
+                    <label>Deployment Method</label>
+                    <select name="method" id="deploy_method" onchange="toggleDeployFields()" style="padding: 12px; font-size: 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);">
+                        <option value="github">GitHub Push</option>
+                        <option value="vercel">Vercel Deployment</option>
+                        <option value="hostinger">Hostinger Hub</option>
+                        <option value="ftp">Standard FTP/SFTP</option>
+                        <option value="webhook">REST Webhook</option>
+                    </select>
+                </div>
+
+                <div id="github-fields" class="deploy-group">
+                    <div class="form-group">
+                        <label>GitHub Personal Access Token (PAT)</label>
+                        <input type="password" name="github_token" placeholder="ghp_xxxxxxxxxxxx">
+                    </div>
+                    <div id="github-advanced-toggle" style="margin-bottom: 20px; padding: 15px; border-radius: 12px; background: rgba(16, 185, 129, 0.05);">
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">Repository Configuration (Required)</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Repository (owner/repo)</label>
+                                <input type="text" name="github_repo" placeholder="username/my-site" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Branch</label>
+                                <input type="text" name="github_branch" value="main" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="vercel-fields" class="deploy-group hidden">
+                    <div class="form-group">
+                        <label>Vercel Auth Token</label>
+                        <input type="password" name="vercel_token" placeholder="vct_...">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Project ID</label>
+                            <input type="text" name="vercel_project_id" placeholder="prj_...">
+                        </div>
+                        <div class="form-group">
+                            <label>Team ID (Optional)</label>
+                            <input type="text" name="vercel_team_id" placeholder="team_...">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="hostinger-fields" class="deploy-group hidden">
+                    <div class="form-group">
+                        <label>SSH Password / API Key</label>
+                        <input type="password" name="hostinger_api_key" placeholder="Your SSH password">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>SSH Host</label>
+                            <input type="text" name="hostinger_host" placeholder="ssh.hostinger.com">
+                        </div>
+                        <div class="form-group">
+                            <label>SSH Username</label>
+                            <input type="text" name="hostinger_user" placeholder="u12345678">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Site Domain / ID</label>
+                        <input type="text" name="hostinger_site_id" placeholder="example.com">
+                    </div>
+                </div>
+
+                <div id="ftp-fields" class="deploy-group hidden">
+                    <div class="form-group">
+                        <label>FTP Host</label>
+                        <input type="text" name="ftp_host" placeholder="ftp.example.com">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" name="ftp_user">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="ftp_pass">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="webhook-fields" class="deploy-group hidden">
+                    <div class="form-group">
+                        <label>Webhook URL</label>
+                        <input type="text" name="webhook_url" placeholder="https://api.site.com/seo-hook">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px; border-top: 1px solid var(--card-border); padding-top: 20px;">
+                    <label>Re-verify Site Access Token (Optional)</label>
+                    <input type="password" name="site_token" placeholder="Leave blank to use initial token">
+                </div>
+
+                <button type="submit" class="submit-btn" style="background: #f59e0b;">Authorize & Deploy Fixes</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if plugin_report.state == 'deploying' %}
+        <div class="review-section" style="border-color: var(--secondary-color);">
+            <h3 style="color: var(--secondary-color);">Deploying Approved Fixes 🚀</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">UrlForge is currently applying your approved fixes and pushing them to your repository...</p>
+            <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px; text-align: center;">
+                <div class="spinner" style="margin: 0 auto 15px auto; width: 40px; height: 40px; border: 4px solid rgba(16, 185, 129, 0.2); border-left-color: var(--secondary-color); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p id="status-display-static" style="font-weight: 600; font-size: 1.1rem; color: var(--text-color);">Reconnecting to deployment logs...</p>
+                <div style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">
+                    You can stay on this page. The results will appear automatically once the operation completes.
+                </div>
+            </div>
+        </div>
+    <script>
+            // Resume polling for users who manually refreshed the page mid-deployment
+            setTimeout(() => {
+                const staticDisplay = document.getElementById('status-display-static');
+                let lastKnown = "";
+                const staticPoll = setInterval(async () => {
+                    try {
+                        const statusRes = await fetch('/progress?task_id={{task_id}}');
+                        if (statusRes.ok) {
+                            const data = await statusRes.json();
+                            if (data.status !== lastKnown) {
+                                lastKnown = data.status;
+                                staticDisplay.innerText = lastKnown;
+                            }
+                            if (data.state === 'completed' || data.state === 'failed' || data.state === 'error') {
+                                clearInterval(staticPoll);
+                                location.reload();
+                            }
+                        }
+                    } catch(e) {}
+                }, 1000);
+            }, 500);
+        </script>
+        {% endif %}
+
+        {% if plugin_report.state == 'completed' %}
+            {% set total_failed = plugin_report.deploy_results | selectattr('success', 'equalto', false) | list | length %}
+            {% set total_success = plugin_report.deploy_results | selectattr('success', 'equalto', true) | list | length %}
+            
+            <div class="review-section" style="border-color: var(--primary-color);">
+                <h3 style="color: var(--primary-color); background: linear-gradient(to right, var(--primary-color), #6366f1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                    {{ 'Deployment Mixed Results' if (total_failed > 0 and total_success > 0) else ('Deployment Failed' if total_failed > 0 else 'Deployment Successful') }}
+                </h3>
+                <p>Applied {{plugin_report.fixes_applied|length}} fixes and generated {{plugin_report.pages_generated|length}} new pages.</p>
+                
+                {% if plugin_report.gsc_audit and plugin_report.gsc_audit.available %}
+                <div style="margin-top: 15px; padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <strong style="color: #3b82f6; display: block; margin-bottom: 5px;">Indexation Fixes:</strong>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text-color);">
+                        <li>Submitted {{ plugin_report.gsc_audit.unindexed | length }} URLs for re-indexing.</li>
+                        {% if plugin_report.gsc_audit.gaps.missing_in_sitemap %}
+                        <li>Optimized sitemap.xml with missing URLs.</li>
+                        {% endif %}
+                        <li><a href="/gsc/download_report?task_id={{task_id}}" style="color: #3b82f6; font-weight: 600;">Download Indexing Excel Report</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if total_failed > 0 %}
+                <div style="margin-top: 15px; padding: 10px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <strong style="color: #ef4444; display: block; margin-bottom: 5px;">Deployment Failures:</strong>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: #ef4444;">
+                        {% for res in plugin_report.deploy_results %}
+                            {% if not res.success %}
+                                <li><strong>{{ res.file_path }}:</strong> {{ res.message }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if plugin_report.errors %}
+        <h3 style="color: var(--error-color); margin-top: 20px;">Execution Errors</h3>
+        <ul style="color: var(--text-muted); font-size: 0.85rem;">
+            {% for err in plugin_report.errors %}
+                <li>{{err.error}}{% if err.url or err.keyword %} ({{err.url or err.keyword}}){% elif err.phase %} [{{err.phase}}]{% endif %}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% if not is_plugin %}
+    <!-- OVERVIEW & SCORE CARD -->
+    <div class="card result-card glass-card">
+        <h2 class="section-title">SEO Health Overview</h2>
+        
+        <div class="score-display">
+            {% set display_score = seo_score or 0 %}
+            <div class="score-circle 
+                {% if display_score >= 80 %}good
+                {% elif display_score >= 50 %}average
+                {% else %}bad
+                {% endif %}">
+                {{display_score|int}}
+            </div>
+            <div class="score-text">
+                {% if display_score >= 80 %}
+                    <h3 style="color: #10b981;">Excellent Health</h3>
+                {% elif display_score >= 50 %}
+                    <h3 style="color: #f59e0b;">Average Health</h3>
+                {% else %}
+                    <h3 style="color: #ef4444;">Poor Health</h3>
+                {% endif %}
+                <p>Site analysis completed. Score represents overall SEO optimization level.</p>
+            </div>
+        </div>
+
+        {% if engine_result and engine_result.strategy %}
+        <div style="margin-top: 25px;">
+            <h3>AI Strategy</h3>
+            <p style="color: var(--text-muted); line-height: 1.7;">{{engine_result.strategy}}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- DEEP ANALYSIS MODULES -->
+    <div class="card result-card glass-card">
+        <h2 class="section-title">Deep Audit Results</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <!-- Content & Strategy -->
+            {% if meta_issues or heading_issues or quality_issues %}
+            <div class="audit-module-card">
+                <div class="audit-module-header">
+                    <div class="audit-module-icon">📄</div>
+                    <div class="audit-module-title">Content Structure</div>
+                </div>
+                <div class="issues-list">
+                    {% for issue in meta_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Optimization opportunity detected.</span>
+                        </div>
+                    {% endfor %}
+                    {% for issue in heading_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Found at <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(50) }}</a></span>
+                        </div>
+                    {% endfor %}
+                    {% for issue in quality_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Page: <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(50) }}</a></span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Media & Images -->
+            {% if image_issues %}
+            <div class="audit-module-card">
+                <div class="audit-module-header">
+                    <div class="audit-module-icon">🖼️</div>
+                    <div class="audit-module-title">Media Optimization</div>
+                </div>
+                <div class="issues-list">
+                    {% for issue in image_issues %}
+                        {% if issue is mapping %}
+                            <div class="issue-item warning">
+                                <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                                <span class="issue-secondary-text">
+                                    <strong>Image:</strong> {{ issue.image | truncate(30) }}<br>
+                                    <strong>Found on:</strong> <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(40) }}</a>
+                                </span>
+                            </div>
+                        {% else %}
+                            <div class="issue-item warning">
+                                <span class="issue-main-text">{{ issue | replace('_', ' ') | capitalize }}</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Technical & Semantic -->
+            {% if schema_issues or hreflang_issues %}
+            <div class="audit-module-card">
+                <div class="audit-module-header">
+                    <div class="audit-module-icon">🧬</div>
+                    <div class="audit-module-title">Semantic & Technical</div>
+                </div>
+                <div class="issues-list">
+                    {% for issue in schema_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue.schema_type }} {{ issue.issue | replace('_', ' ') }}</span>
+                            <span class="issue-secondary-text">Check implementation for standard compliance.</span>
+                        </div>
+                    {% endfor %}
+                    {% for issue in hreflang_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Affecting <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(50) }}</a></span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Speed & Experience -->
+            {% if speed_issues or core_issues or mobile_issues or experience_issues %}
+            <div class="audit-module-card">
+                <div class="audit-module-header">
+                    <div class="audit-module-icon">⚡</div>
+                    <div class="audit-module-title">User Experience</div>
+                </div>
+                <div class="issues-list">
+                    {% for issue in speed_issues %}
+                        <div class="issue-item warning">
+                            <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Improve loading speed for <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(50) }}</a></span>
+                        </div>
+                    {% endfor %}
+                    {% for issue in core_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue | replace('_', ' ') | capitalize }}</span>
+                        </div>
+                    {% endfor %}
+                    {% for issue in mobile_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Responsiveness check: <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(50) }}</a></span>
+                        </div>
+                    {% endfor %}
+                    {% for issue in experience_issues %}
+                        <div class="issue-item">
+                            <span class="issue-main-text">{{ issue.issue | replace('_', ' ') | capitalize }}</span>
+                            <span class="issue-secondary-text">Interactive elements at <a href="{{ issue.url }}" class="issue-url-link" target="_blank">{{ issue.url | truncate(50) }}</a></span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Keyword Gap -->
+        {% if site_keywords or keyword_gap %}
+        <h3 style="margin-top: 30px; border-top: 1px solid var(--card-border); padding-top: 20px;">Content & Keyword Gaps</h3>
+        <p><b>Identified Keywords:</b> 
+            <span style="color: var(--primary-color); font-weight: 500;">{{site_keywords | join(", ")}}</span>
+        </p>
+        {% if keyword_gap %}
+        <p style="margin-top: 10px;"><b>Gaps vs Competitors:</b></p>
+        <ul style="font-size: 0.9rem;">
+            {% for competitor, gaps in keyword_gap.items() %}
+                <li><b>{{competitor}}:</b> <span style="color: var(--text-muted);">{{gaps | join(", ")}}</span></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- SITEMAP FILES -->
+    {% if files %}
+    <div class="card result-card glass-card">
+        <h2 class="section-title">Generated Exports</h2>
+        <ul>
+            {% for file in files %}
+                <li><a href="/download?file={{file}}" target="_blank">{{file}}</a> <span class="badge">XML</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+
+    <!-- CONTENT EDITOR MODAL -->
+    <div id="content-editor-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+        <div class="card" style="width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative;">
+            <button onclick="closeContentEditor()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
+            <h2 style="margin-top: 0;">Content Editor: <span id="editor-keyword" style="color: var(--primary-color);"></span></h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Edit the JSON structure of the generated page. The HTML will be re-rendered automatically on save.</p>
+            <input type="hidden" id="editor-keyword-input">
+            <textarea id="editor-textarea" style="width: 100%; height: 50vh; font-family: monospace; font-size: 0.85rem; padding: 15px; background: rgba(0,0,0,0.05); border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-color);"></textarea>
+            <div style="margin-top: 20px; text-align: right;">
+                <button onclick="closeContentEditor()" style="background: none; border: 1px solid var(--card-border); padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-right: 10px; color: var(--text-color);">Cancel</button>
+                <button id="editor-save-btn" onclick="saveContent()" style="background: var(--primary-color); border: none; padding: 10px 20px; border-radius: 6px; color: white; cursor: pointer; font-weight: 600;">Save & Render</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="features-section" class="features-section" style="padding: 60px 20px; max-width: 1200px; margin: 0 auto;">
+    <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">Why Choose UrlForge?</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+        <div class="glass-card" style="padding: 30px; border-radius: 16px; border: 1px solid var(--card-border);">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">🧠</div>
+            <h3 style="margin-bottom: 10px; font-weight: 700;">Provider-Agnostic Engine</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">You have total control over the AI. Choose between Google Gemini, OpenAI, OpenRouter, or run it entirely privately using Ollama on your local machine.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; border-radius: 16px; border: 1px solid var(--card-border);">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">🔍</div>
+            <h3 style="margin-bottom: 10px; font-weight: 700;">Holistic Business Analysis</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">UrlForge doesn't just look at keywords. It analyzes your homepage to understand your core business category, audience, and market gap before generating strategies.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; border-radius: 16px; border: 1px solid var(--card-border);">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">✨</div>
+            <h3 style="margin-bottom: 10px; font-weight: 700;">Autonomous DOM Fixer</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">No more manual coding. UrlForge parses your malformed HTML, injects canonicals, demotes duplicate H1s, and applies structural fixes automatically.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; border-radius: 16px; border: 1px solid var(--card-border);">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">🚀</div>
+            <h3 style="margin-bottom: 10px; font-weight: 700;">Direct CI/CD Integration</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Once you approve the fixes, UrlForge securely deploys the patched files directly to your GitHub repository or Vercel, streamlining your workflow.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; border-radius: 16px; border: 1px solid var(--card-border);">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">📈</div>
+            <h3 style="margin-bottom: 10px; font-weight: 700;">Google Search Console Sync</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Automatically ping the Google Indexing API to notify search engines about your new fixed pages, bypassing crawl delays.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; border-radius: 16px; border: 1px solid var(--card-border);">
+            <div style="font-size: 2.5rem; margin-bottom: 15px;">📝</div>
+            <h3 style="margin-bottom: 10px; font-weight: 700;">Content Generation</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Automatically identify keyword gaps and generate high-quality, relevant SEO pages designed specifically to outrank your competitors.</p>
+        </div>
+    </div>
+</section>
+
+<section id="faqs-section" class="faqs-section" style="padding: 60px 20px; max-width: 1000px; margin: 0 auto 100px auto;">
+    <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">Frequently Asked Questions</h2>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        <div class="faq-accordion glass-card" style="padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
+            <h4 style="margin: 0; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between;" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                Is UrlForge a Plugin, a SaaS, or a Desktop App? <span>+</span>
+            </h4>
+            <div class="hidden" style="margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                UrlForge is an <strong>Autonomous Backend Engine</strong>. While it has a Web UI, it functions primarily as a "DevSecOps Plugin" for your website repository. It plugs into your codebase, analyzes it, and pushes fixes directly to your GitHub/Vercel.
+            </div>
+        </div>
+        
+        <div class="faq-accordion glass-card" style="padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
+            <h4 style="margin: 0; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between;" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                Can I deploy this on Render.com? <span>+</span>
+            </h4>
+            <div class="hidden" style="margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                Yes! UrlForge is fully containerized and production-ready for Render.com. We provide a <code>render.yaml</code> blueprint. Once deployed on Render, it runs as your centralized SEO brain. You can log into your Render-hosted UrlForge dashboard and tell it to fix any of your remote websites.
+            </div>
+        </div>
+
+        <div class="faq-accordion glass-card" style="padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
+            <h4 style="margin: 0; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between;" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                Do I need to pay for API credits? <span>+</span>
+            </h4>
+            <div class="hidden" style="margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                It's up to you. You can use your own OpenAI or Google Gemini API keys. However, if you want a 100% free and private experience, you can point UrlForge to a local <strong>Ollama</strong> instance and run open-source models like Llama 3 entirely for free.
+            </div>
+        </div>
+        
+        <div class="faq-accordion glass-card" style="padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
+            <h4 style="margin: 0; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between;" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                Will it break my website's design? <span>+</span>
+            </h4>
+            <div class="hidden" style="margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                No. The <code>html_rewriter</code> engine strictly manipulates only specific SEO tags (like <code>&lt;title&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;h1&gt;</code>) and safely injects headers without touching your structural CSS classes or complex JS frameworks. Plus, you get to review all changes before they are deployed.
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // --- UrlForge Interactive Core ---
+    const core = document.getElementById('main-core');
+    document.addEventListener('mousemove', (e) => {
+        if (!core) return;
+        const rect = core.getBoundingClientRect();
+        const coreX = rect.left + rect.width / 2;
+        const coreY = rect.top + rect.height / 2;
+        
+        const deltaX = (e.clientX - coreX) / 25;
+        const deltaY = (e.clientY - coreY) / 25;
+        
+        // Only apply if cursor is relatively close
+        const dist = Math.sqrt(Math.pow(e.clientX - coreX, 2) + Math.pow(e.clientY - coreY, 2));
+        if (dist < 400) {
+            core.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${1 + (150-dist/4)/1000})`;
+        } else {
+            core.style.transform = `translate(0, 0) scale(1)`;
+        }
+    });
+
+    // --- Dark Mode Toggle Logic ---
+    const themeBtn = document.getElementById('theme-btn');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
+    
+    // Check local storage for theme preference immediately
+    function applyTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            if(themeIcon) themeIcon.innerText = '☀️';
+            if(themeText) themeText.innerText = 'Light Mode';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            if(themeIcon) themeIcon.innerText = '🌙';
+            if(themeText) themeText.innerText = 'Dark Mode';
+        }
+    }
+    
+    // Run immediately
+    applyTheme();
+
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+            applyTheme();
+        });
+    }
+
+    // --- Antigravity Global Mouse Hover Effect (Fluid) ---
+    const coords = { x: 0, y: 0 };
+    const glowPos = { x: 0, y: 0 };
+    let glowSize = 600;
+    
+    document.addEventListener("mousemove", e => {
+        coords.x = e.clientX;
+        coords.y = e.clientY;
+    });
+
+    function animateGlow() {
+        const dx = coords.x - glowPos.x;
+        const dy = coords.y - glowPos.y;
+        
+        glowPos.x += dx * 0.15; // Inertia / lagging effect
+        glowPos.y += dy * 0.15;
+        
+        document.body.style.setProperty("--mouse-x", `${glowPos.x}px`);
+        document.body.style.setProperty("--mouse-y", `${glowPos.y}px`);
+        document.body.style.setProperty("--glow-size", `${glowSize}px`);
+        
+        requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+    
+    document.addEventListener("mousedown", () => {
+        glowSize = 900;
+        document.body.style.setProperty("--hover-glow", document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.35)');
+    });
+    
+    document.addEventListener("mouseup", () => {
+        glowSize = 600;
+        document.body.style.setProperty("--hover-glow", document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(16, 185, 129, 0.06)' : 'rgba(16, 185, 129, 0.12)');
+    });
+
+    function hideAIForms(event) {
+        if (event) event.stopPropagation();
+        document.getElementById('ai-discovery-card').classList.remove('hidden');
+        document.getElementById('ai-config-forms').classList.add('hidden');
+    }
+
+    function revealAIForms() {
+        document.getElementById('ai-discovery-card').classList.add('hidden');
+        document.getElementById('ai-config-forms').classList.remove('hidden');
+        updateAIFields(); // Initialize visibility
+    }
+
+    function updateAIFields() {
+        const provider = document.querySelector('select[name="primary_provider"]').value;
+        
+        // Hide all fields first
+        document.querySelectorAll('.ai-field-group').forEach(group => {
+            group.classList.add('hidden');
+        });
+        
+        // Show specific field based on selection
+        const target = document.getElementById(provider + '-config');
+        if (target) {
+            target.classList.remove('hidden');
+        }
+    }
+
+
+    const navBtn = document.querySelector('.nav-btn');
+    if (navBtn) {
+        navBtn.addEventListener('click', () => {
+            document.querySelector('.content-area').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function handleFormSubmit(formId, endpoint) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Hide old results
+            document.querySelectorAll('.result-card').forEach(el => {
+                if (el.id !== 'form-card') el.style.display = 'none';
+            });
+            
+            // Cinematic Transition
+            document.body.classList.add('analytical-mode');
+            if (window.brain) {
+                window.brain.startThinking();
+            }
+
+            const overlay = document.getElementById('loading-overlay');
+            const submitBtn = form.querySelector('.submit-btn');
+            const statusDisplay = document.getElementById('status-display');
+            
+            overlay.classList.remove('hidden');
+            overlay.style.background = 'transparent'; 
+            overlay.style.backdropFilter = 'none';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+            submitBtn.innerText = 'Processing...';
+
+            const taskId = Math.random().toString(36).substring(2, 15);
+            const formData = new FormData(this);
+            
+            // CONVERT FORM DATA TO TYPED JSON
+            const data = { task_id: taskId };
+            formData.forEach((value, key) => {
+                // Type casting for Pydantic
+                if (value === 'true') value = true;
+                else if (value === 'false') value = false;
+                else if (typeof value === 'string' && !isNaN(value) && value.trim() !== "" && key !== 'domain' && key !== 'site_url' && key !== 'openai_key' && key !== 'gemini_key') {
+                    value = Number(value);
+                }
+                
+                if (key === 'custom_selectors') {
+                    if (value && value.trim() !== "") {
+                        try { value = JSON.parse(value); } catch(e) { console.error("Invalid custom_selectors JSON"); value = null; }
+                    } else {
+                        value = null;
+                    }
+                }
+                
+                if (key === 'competitors') {
+                    if (value && value.trim() !== "") {
+                        value = value.split(',').map(s => s.trim()).filter(s => s !== "");
+                    } else {
+                        value = [];
+                    }
+                }
+
+                // Handle empty Optional[SecretStr] or Optional[str] fields as null
+                if (['openai_key', 'gemini_key', 'site_token', 'ollama_host'].includes(key)) {
+                    if (!value || value.trim() === "") value = null;
+                }
+                
+                data[key] = value;
+            });
+
+            // ENSURE CHECKBOXES ARE INCLUDED (even if false)
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (!cb.checked) {
+                    data[cb.name] = false;
+                } else {
+                    data[cb.name] = true;
+                }
+            });
+            
+            if (statusDisplay) statusDisplay.innerText = 'Connecting to UrlForge...';
+            let lastStatus = "";
+            
+            const pollInterval = setInterval(async () => {
+                try {
+                    const statusRes = await fetch('/progress?task_id=' + taskId);
+                    if (statusRes.ok) {
+                        const statusData = await statusRes.json();
+                        const currentStatus = statusData.status;
+                        
+                        // Jolt the brain on every poll to show 'Activity' even if status text is same
+                        if (window.brain) window.brain.jolt();
+
+                        if (currentStatus && currentStatus !== lastStatus) {
+                            lastStatus = currentStatus;
+                            if (window.brain) window.brain.showCategory(currentStatus);
+                            
+                            statusDisplay.style.opacity = '0';
+                            setTimeout(() => {
+                                statusDisplay.innerText = currentStatus;
+                                statusDisplay.style.opacity = '1';
+                                statusDisplay.classList.remove('status-fade-in');
+                                void statusDisplay.offsetWidth;
+                                statusDisplay.classList.add('status-fade-in');
+                            }, 300);
+                        }
+
+                        if (statusData.state === 'error') {
+                            clearInterval(pollInterval);
+                            overlay.classList.add('hidden');
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = '1';
+                            submitBtn.innerText = 'Run Engine';
+                            alert('Error: ' + (statusData.error || 'Unknown error'));
+                            return;
+                        }
+                        
+                        if (statusData.state === 'completed' || statusData.state === 'pending_approval' || statusData.state === 'failed') {
+                            clearInterval(pollInterval);
+                            document.body.classList.remove('analytical-mode');
+                            document.body.classList.add('mode-results');
+                            if (window.brain) window.brain.stopThinking();
+                            setTimeout(() => {
+                                window.location.href = '/results?task_id=' + taskId;
+                            }, 500);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Polling error:", err);
+                }
+            }, 1000);
+
+            try {
+                const res = await fetch(endpoint, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data) 
+                });
+                if (!res.ok) {
+                    clearInterval(pollInterval);
+                    overlay.classList.add('hidden');
+                    const errData = await res.json().catch(() => ({}));
+                    const msg = errData.error || errData.message || (errData.detail ? JSON.stringify(errData.detail) : "Unknown error");
+                    alert("Submission failed: " + msg);
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.innerText = 'Run Engine';
+                }
+            } catch (err) {
+                clearInterval(pollInterval);
+                overlay.classList.add('hidden');
+                alert("Network error: " + err.message);
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.innerText = 'Run Engine';
+            }
+        });
+    }
+
+    handleFormSubmit('generate-form', '/generate');
+    handleFormSubmit('plugin-form', '/plugin/run');
+
+    function toggleAll(master) {
+        document.querySelectorAll('.action-check').forEach(c => c.checked = master.checked);
+    }
+    function toggleAllPages(master) {
+        document.querySelectorAll('.page-check').forEach(c => c.checked = master.checked);
+    }
+    function toggleDeployFields() {
+        const method = document.getElementById('deploy_method').value;
+        const allGroups = document.querySelectorAll('.deploy-group');
+        allGroups.forEach(g => g.classList.add('hidden'));
+        const activeGroup = document.getElementById(method + '-fields');
+        if (activeGroup) activeGroup.classList.remove('hidden');
+    }
+    async function generateContentForKeyword(kw, comp) {
+        const btn = event.target;
+        const originalText = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = "Generating...";
+        try {
+            const payload = {
+                task_id: '{{task_id}}',
+                keyword: kw,
+                competitors: comp ? comp.split(',').map(s => s.trim()) : []
+            };
+            const response = await fetch('/plugin/generate_content', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload) 
+            });
+            const data = await response.json();
+            if (data.status === 'generation_started') {
+                alert(`Content generation started for "${kw}". Check progress below.`);
+                btn.innerText = "Started";
+                setTimeout(() => { location.reload(); }, 2000);
+            } else {
+                alert("Failed: " + (data.error || "Unknown error"));
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        } catch (err) {
+            alert("Error: " + err.message);
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    }
+    function openContentEditor(keyword, btn) {
+        const schemaData = btn.getAttribute('data-schema');
+        document.getElementById('editor-keyword').innerText = keyword;
+        document.getElementById('editor-keyword-input').value = keyword;
+        document.getElementById('editor-textarea').value = JSON.stringify(JSON.parse(schemaData), null, 2);
+        document.getElementById('content-editor-modal').classList.remove('hidden');
+    }
+    function closeContentEditor() {
+        document.getElementById('content-editor-modal').classList.add('hidden');
+    }
+    async function saveContent() {
+        const keyword = document.getElementById('editor-keyword-input').value;
+        const schemaDataValue = document.getElementById('editor-textarea').value;
+        const saveBtn = document.getElementById('editor-save-btn');
+        const originalText = saveBtn.innerText;
+        try {
+            JSON.parse(schemaDataValue);
+        } catch(e) {
+            alert("Invalid JSON schema. Please correct errors before saving.");
+            return;
+        }
+        saveBtn.disabled = true;
+        saveBtn.innerText = "Saving...";
+        try {
+            const payload = {
+                task_id: '{{task_id}}',
+                keyword: keyword,
+                schema_data: schemaDataValue
+            };
+            const res = await fetch('/plugin/update_content', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload) 
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                saveBtn.innerText = "Saved!";
+                setTimeout(() => { closeContentEditor(); location.reload(); }, 1000);
+            } else {
+                alert("Failed to save: " + data.error);
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
+            }
+        } catch(e) {
+            alert("Error saving: " + e.message);
+            saveBtn.innerText = originalText;
+            saveBtn.disabled = false;
+        }
+    }
+    function downloadPDF() {
+        window.open('/plugin/download_report?task_id={{task_id}}', '_blank');
+    }
+
+    const approvalForm = document.getElementById('approval-form');
+    if (approvalForm) {
+        approvalForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const actionChecks = document.querySelectorAll('.action-check:checked');
+            const pageChecks = document.querySelectorAll('.page-check:checked');
+            const actionIds = Array.from(actionChecks).map(c => c.dataset.id);
+            const pageKeywords = Array.from(pageChecks).map(c => c.dataset.keyword);
+            
+            // NEST CONFIGURATION FOR JSON
+            const payload = {
+                task_id: formData.get('task_id'),
+                method: formData.get('method'),
+                approved_actions: actionIds,
+                approved_pages: pageKeywords,
+                site_token: formData.get('site_token') || null,
+                deploy_config: {
+                    platform: formData.get('method'),
+                    github_token: formData.get('github_token'),
+                    github_repo: formData.get('github_repo'),
+                    github_branch: formData.get('github_branch'),
+                    vercel_token: formData.get('vercel_token'),
+                    vercel_project_id: formData.get('vercel_project_id'),
+                    vercel_team_id: formData.get('vercel_team_id'),
+                    hostinger_api_key: formData.get('hostinger_api_key'),
+                    hostinger_host: formData.get('hostinger_host'),
+                    hostinger_user: formData.get('hostinger_user'),
+                    hostinger_site_id: formData.get('hostinger_site_id'),
+                    ftp_host: formData.get('ftp_host'),
+                    ftp_user: formData.get('ftp_user'),
+                    ftp_pass: formData.get('ftp_pass'),
+                    webhook_url: formData.get('webhook_url')
+                }
+            };
+            
+            document.body.classList.add('analytical-mode');
+            if (window.brain) window.brain.startThinking();
+            const overlay = document.getElementById('loading-overlay');
+            const statusDisplay = document.getElementById('status-display');
+            overlay.classList.remove('hidden');
+            overlay.style.background = 'transparent'; 
+            overlay.style.backdropFilter = 'none';
+            if (statusDisplay) statusDisplay.innerText = 'Applying & Deploying approved fixes...';
+            try {
+                const res = await fetch('/plugin/approve', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload) 
+                });
+                if (res.ok) {
+                    let lastStatus = "";
+                    const pollInterval = setInterval(async () => {
+                        try {
+                            const statusRes = await fetch('/progress?task_id=' + payload.task_id);
+                            if (statusRes.ok) {
+                                const statusData = await statusRes.json();
+                                const currentStatus = statusData.status;
+                                if (currentStatus && currentStatus !== lastStatus) {
+                                    lastStatus = currentStatus;
+                                    if (window.brain) window.brain.showCategory(currentStatus);
+                                    statusDisplay.style.opacity = '0';
+                                    setTimeout(() => {
+                                        statusDisplay.innerText = currentStatus;
+                                        statusDisplay.style.opacity = '1';
+                                        statusDisplay.classList.remove('status-fade-in');
+                                        void statusDisplay.offsetWidth;
+                                        statusDisplay.classList.add('status-fade-in');
+                                    }, 300);
+                                }
+                                if (statusData.state === 'error') {
+                                    clearInterval(pollInterval);
+                                    overlay.classList.add('hidden');
+                                    alert('Error: ' + (statusData.error || 'Unknown error'));
+                                    return;
+                                }
+                                if (statusData.state === 'completed' || statusData.state === 'failed') {
+                                    clearInterval(pollInterval);
+                                    document.body.classList.remove('analytical-mode');
+                                    document.body.classList.add('mode-results');
+                                    if (window.brain) window.brain.stopThinking();
+                                    setTimeout(() => { location.reload(); }, 500);
+                                }
+                            }
+                        } catch (err) { console.error("Polling error:", err); }
+                    }, 1000);
+                } else {
+                    alert("Approval submission failed");
+                    overlay.classList.add('hidden');
+                }
+            } catch (err) {
+                alert("Network error during approval");
+                overlay.classList.add('hidden');
+            }
+        });
+    }
+
+    function showAuthForm() {
+        const authSection = document.getElementById('auth-section');
+        if (authSection) {
+            authSection.style.display = 'block';
+            authSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // FAQ Editor Functions
+    function openFAQEditor(btn) {
+        const card = btn.closest('.faq-item-card');
+        const index = card.getAttribute('data-index');
+        const question = card.getAttribute('data-question');
+        const answer = card.getAttribute('data-answer');
+        
+        document.getElementById('faq-editor-index').value = index;
+        document.getElementById('faq-editor-question').value = question;
+        document.getElementById('faq-editor-answer').value = answer;
+        document.getElementById('faq-editor-modal').classList.remove('hidden');
+    }
+
+    function closeFAQEditor() {
+        document.getElementById('faq-editor-modal').classList.add('hidden');
+    }
+
+    async function saveFAQ() {
+        const index = document.getElementById('faq-editor-index').value;
+        const question = document.getElementById('faq-editor-question').value;
+        const answer = document.getElementById('faq-editor-answer').value;
+        const taskId = new URLSearchParams(window.location.search).get('task_id');
+        
+        const saveBtn = document.getElementById('faq-save-btn');
+        saveBtn.innerText = 'Saving...';
+        saveBtn.disabled = true;
+
+        try {
+            const res = await fetch('/plugin/update_faq', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    task_id: taskId,
+                    faq_index: parseInt(index),
+                    question: question,
+                    answer: answer
+                })
+            });
+            if (res.ok) {
+                location.reload(); // Refresh to show updated content
+            } else {
+                alert("Failed to save FAQ");
+            }
+        } catch (err) {
+            alert("Error saving FAQ: " + err.message);
+        } finally {
+            saveBtn.innerText = 'Save Changes';
+            saveBtn.disabled = false;
+        }
+    }
+
+    async function deleteFAQ(btn) {
+        const card = btn.closest('.faq-item-card');
+        const index = card.getAttribute('data-index');
+        if (!confirm("Are you sure you want to remove this FAQ?")) return;
+        const taskId = new URLSearchParams(window.location.search).get('task_id');
+        try {
+            const res = await fetch(`/plugin/delete_faq?task_id=${taskId}&faq_index=${index}`, {
+                method: 'POST'
+            });
+            if (res.ok) {
+                location.reload();
+            } else {
+                alert("Failed to delete FAQ");
+            }
+        } catch (err) {
+            alert("Error deleting FAQ: " + err.message);
+        }
+    }
+
+    // Site Profile Editor Functions
+    function openProfileEditor() {
+        const rawMd = document.getElementById('raw-profile-md').value;
+        document.getElementById('profile-editor-textarea').value = rawMd;
+        document.getElementById('profile-editor-modal').classList.remove('hidden');
+    }
+
+    function closeProfileEditor() {
+        document.getElementById('profile-editor-modal').classList.add('hidden');
+    }
+
+    async function saveSiteProfile() {
+        const updatedMd = document.getElementById('profile-editor-textarea').value;
+        const taskId = new URLSearchParams(window.location.search).get('task_id');
+        const saveBtn = document.getElementById('profile-save-btn');
+        
+        saveBtn.innerText = 'Saving...';
+        saveBtn.disabled = true;
+
+        try {
+            const res = await fetch('/plugin/update_profile', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    task_id: taskId,
+                    markdown_content: updatedMd
+                })
+            });
+            if (res.ok) {
+                // Update hidden input so if they reopen it is updated
+                document.getElementById('raw-profile-md').value = updatedMd;
+                // Ideally rerender markdown-body, but for now reload is safest
+                location.reload();
+            } else {
+                alert("Failed to save Site Profile");
+            }
+        } catch (err) {
+            alert("Error saving Profile: " + err.message);
+        } finally {
+            saveBtn.innerText = 'Save Site Profile';
+            saveBtn.disabled = false;
+        }
+    }
+
+    function downloadAnalysis() {
+        const analysisArea = document.querySelector('#site-analysis-area .markdown-body');
+        if (!analysisArea) return;
+        const text = analysisArea.innerText;
+        const blob = new Blob([text], { type: 'text/markdown' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `strategic_analysis_${new URLSearchParams(window.location.search).get('task_id')}.md`;
+        a.click();
+    }
+</script>
+
+</div>
+
+<!-- FAQ Editor Modal -->
+<div id="faq-editor-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card" style="max-width: 600px; padding: 30px; margin: 100px auto; position: relative;">
+        <h2 class="section-title">Edit FAQ Item</h2>
+        <input type="hidden" id="faq-editor-index">
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Question</label>
+            <input type="text" id="faq-editor-question" style="width:100%; padding:12px; border-radius:8px; background: rgba(0,0,0,0.2); border: 1px solid var(--card-border); color: #fff;">
+        </div>
+        <div class="form-group" style="margin-top: 15px;">
+            <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Answer</label>
+            <textarea id="faq-editor-answer" style="width:100%; height:150px; padding:12px; border-radius:8px; background: rgba(0,0,0,0.2); border: 1px solid var(--card-border); color: #fff; resize:vertical;"></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 30px; justify-content: flex-end;">
+            <button onclick="closeFAQEditor()" class="btn-sm" style="background:transparent; border:1px solid var(--card-border); color:var(--text-muted); padding: 10px 20px; border-radius: 8px; cursor: pointer;">Cancel</button>
+            <button onclick="saveFAQ()" id="faq-save-btn" class="submit-btn" style="width:auto; margin-top:0; padding:12px 30px; background: var(--primary-color); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- Site Profile Editor Modal -->
+<div id="profile-editor-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card" style="max-width: 800px; padding: 30px; margin: 50px auto; position: relative;">
+        <h2 class="section-title">Edit Site Profile (Markdown)</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+            This profile is used as context for all AI generation. Refine the niche, services, and mission to improve results.
+        </p>
+        <div class="form-group">
+            <textarea id="profile-editor-textarea" style="width:100%; height:400px; padding:15px; border-radius:12px; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); color: #fff; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.5; resize: vertical;"></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 30px; justify-content: flex-end;">
+            <button onclick="closeProfileEditor()" class="btn-sm" style="background:transparent; border:1px solid var(--card-border); color:var(--text-muted); padding: 10px 20px; border-radius: 8px; cursor: pointer;">Cancel</button>
+            <button onclick="saveSiteProfile()" id="profile-save-btn" class="submit-btn" style="width:auto; margin-top:0; padding:12px 30px; background: var(--primary-color); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Save Site Profile</button>
+        </div>
+    </div>
+</div>
+    </div><!-- End content-area -->
+
+    <!-- Duplicate overlay removed -->
+    
+    <script src="/static/brain_engine.js?v={{ timestamp | default('4') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const renderMD = () => {
+                document.querySelectorAll('.markdown-body').forEach(body => {
+                    const raw = body.innerText.trim();
+                    if (raw && (raw.includes('#') || raw.includes('**') || raw.includes('---'))) {
+                        body.innerHTML = marked.parse(raw);
+                    }
+                });
+            };
+            renderMD();
+            window.rerenderMarkdown = renderMD;
+            // Immediate re-check to catch late-load content
+            setTimeout(renderMD, 500);
+        });
+    </script>
+</body>
+</html>
