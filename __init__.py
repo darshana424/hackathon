@@ -4,10 +4,23 @@
 
 from __future__ import annotations
 
-"""
-Hazardous Materials
+import sys
+import warnings
 
-This is a "Hazardous Materials" module. You should ONLY use it if you're
-100% absolutely sure that you know what you're doing because this module
-is full of land mines, dragons, and dinosaurs with laser guns.
-"""
+from cryptography import utils
+from cryptography.__about__ import __author__, __copyright__, __version__
+
+__all__ = [
+    "__author__",
+    "__copyright__",
+    "__version__",
+]
+
+if sys.version_info[:2] == (3, 8):
+    warnings.warn(
+        "Python 3.8 is no longer supported by the Python core team "
+        "and support for it is deprecated in cryptography. The next "
+        "release of cryptography will remove support for Python 3.8.",
+        utils.CryptographyDeprecationWarning,
+        stacklevel=2,
+    )
